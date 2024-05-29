@@ -18,6 +18,10 @@ export class TaskRepository extends Repository<Task> {
     }
 
     if (search) {
+      query.andWhere(
+        'LOWER(task.title) LIKE :search OR LOWER(task.description) LIKE :search',
+        { search: `%${search.toLocaleLowerCase()}%` },
+      );
     }
 
     const tasks = await query.getMany();
